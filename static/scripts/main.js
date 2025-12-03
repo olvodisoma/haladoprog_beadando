@@ -6,20 +6,20 @@
             let activeTheme = "";
 
             cards.forEach(card => {
-                const theme = card.dataset.theme; // pl. "boldog", "nyugodt"...
+                const theme = card.dataset.theme; 
 
                 card.addEventListener("mouseenter", () => {
-                    // előző theme levétele
+                 
                     if (activeTheme) {
                         body.classList.remove("theme-" + activeTheme);
                     }
-                    // új theme felrakása
+                
                     body.classList.add("theme-" + theme);
                     activeTheme = theme;
                 });
             });
 
-            // Ha leviszed az egeret a grid-ről, visszaáll alap háttér
+         
             if (grid) {
                 grid.addEventListener("mouseleave", () => {
                     if (activeTheme) {
@@ -40,37 +40,37 @@ document.addEventListener("DOMContentLoaded", () => {
     let particles = [];
     let animationId = null;
 
-    // Hangulat konfigurációk – mozgás stílusa, darabszám
+   
     const moodConfigs = {
         boldog: {
             className: "shape-happy",
             count: 28,
-            baseSpeed: 0.08,      // px / frame nagyságrend
-            extraY: -0.04         // kicsit felfelé úszik
+            baseSpeed: 0.08,      
+            extraY: -0.04        
         },
         nyugodt: {
             className: "shape-calm",
             count: 22,
             baseSpeed: 0.04,
-            extraY: 0.02          // lassan lefele sodródik
+            extraY: 0.02          
         },
         duhos: {
             className: "shape-angry",
             count: 24,
             baseSpeed: 0.18,
-            extraY: -0.02         // gyorsabb, diagonális
+            extraY: -0.02        
         },
         faradt: {
             className: "shape-tired",
             count: 16,
             baseSpeed: 0.02,
-            extraY: 0.01          // szinte csak lebeg
+            extraY: 0.01          
         },
         motivalt: {
             className: "shape-motivated",
             count: 30,
             baseSpeed: 0.12,
-            extraY: -0.06         // felfelé törő energia
+            extraY: -0.06        
         }
     };
 
@@ -109,27 +109,27 @@ document.addEventListener("DOMContentLoaded", () => {
             el.style.width = size + "px";
             el.style.height = size + "px";
 
-            // Kezdő pozíció véletlen a viewporton belül
+            
             const x = Math.random() * width;
             const y = Math.random() * height;
 
-            // Irányszög az adott hangulathoz
+           
             let angle;
             switch (moodSlug) {
                 case "boldog":
-                    angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.7; // főleg felfelé
+                    angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.7; 
                     break;
                 case "nyugodt":
-                    angle = Math.PI + (Math.random() - 0.5) * 0.4;      // horizontális drift
+                    angle = Math.PI + (Math.random() - 0.5) * 0.4;     
                     break;
                 case "duhos":
-                    angle = -Math.PI / 4 + (Math.random() - 0.5) * 0.6; // diagonális gyors
+                    angle = -Math.PI / 4 + (Math.random() - 0.5) * 0.6; 
                     break;
                 case "faradt":
-                    angle = Math.PI / 2 + (Math.random() - 0.5) * 0.3;  // lassú lefele
+                    angle = Math.PI / 2 + (Math.random() - 0.5) * 0.3;  
                     break;
                 case "motivalt":
-                    angle = -Math.PI / 3 + (Math.random() - 0.5) * 0.4; // felfelé, dinamikus
+                    angle = -Math.PI / 3 + (Math.random() - 0.5) * 0.4;
                     break;
                 default:
                     angle = Math.random() * Math.PI * 2;
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const speedMultiplier = 0.5 + Math.random() * 1.5;
             const speed = config.baseSpeed * speedMultiplier;
-            const vx = Math.cos(angle) * speed * 60; // kb. 60fps-re méretezve
+            const vx = Math.cos(angle) * speed * 60; 
             const vy = Math.sin(angle) * speed * 60;
 
             const scale = 0.7 + Math.random() * 0.9;
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
             el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
             bgLayer.appendChild(el);
 
-            // azonnali fade-in
+
             requestAnimationFrame(() => {
                 el.classList.add("is-visible");
             });
@@ -165,44 +165,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function respawnParticle(p, width, height, margin) {
-        // amikor kiment a képernyőn túlra, újra beszáll a túloldalról
-        // irány alapján eldöntjük, vízszintes vagy függőleges oldalról jöjjön
+
 
         const horizontalDominant = Math.abs(p.vx) >= Math.abs(p.vy);
 
         if (horizontalDominant) {
-            // inkább vízszintes mozgás
+
             if (p.vx > 0) {
-                // jobbra ment ki → jöjjön vissza balról
+               
                 p.x = -margin;
             } else {
-                // balra ment ki → jöjjön vissza jobbról
+               
                 p.x = width + margin;
             }
             p.y = Math.random() * height;
         } else {
-            // inkább függőleges mozgás
+         
             if (p.vy + p.extraY > 0) {
-                // lefele ment ki → jöjjön vissza felülről
+              
                 p.y = -margin;
             } else {
-                // felfelé ment ki → jöjjön vissza alulról
+             
                 p.y = height + margin;
             }
             p.x = Math.random() * width;
         }
 
-        // kint, a képernyőn kívül “spawnol”, és onnan úszik be
+     
     }
 
     function startAnimationLoop() {
-        if (animationId !== null) return; // már fut
+        if (animationId !== null) return;
 
         const tick = () => {
             const width = bgLayer.clientWidth || window.innerWidth;
             const height = bgLayer.clientHeight || window.innerHeight;
 
-            const margin = 150; // meddig mehet ki a képernyőn túl
+            const margin = 150; 
 
             particles.forEach(p => {
                 p.x += p.vx;
@@ -215,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     p.y > height + margin;
 
                 if (outOfBounds) {
-                    // ha kiment, újra spawnoljuk a túloldalon
+                  
                     respawnParticle(p, width, height, margin);
                 }
 
@@ -233,11 +232,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setMood(theme) {
         if (!theme) return;
-        if (currentMood === theme) return; // ugyanaz, ne csináljunk semmit
+        if (currentMood === theme) return; 
 
         currentMood = theme;
 
-        // Body háttér váltás
+
         if (activeTheme) {
             body.classList.remove("theme-" + activeTheme);
         }
@@ -250,13 +249,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     cards.forEach(card => {
-        const theme = card.dataset.theme; // pl. "boldog"
+        const theme = card.dataset.theme; 
         card.addEventListener("mouseenter", () => {
             setMood(theme);
         });
     });
 
-    // Ha leviszed az egeret a grid-ről, minden visszaáll
+
     if (grid) {
         grid.addEventListener("mouseleave", () => {
             currentMood = null;
@@ -276,7 +275,7 @@ const infoSection = document.querySelector(".info");
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         infoSection.classList.add("visible");
-                        // ha nem akarod, hogy később eltűnjön, le is kapcsolhatjuk az observert:
+                       
                         observer.unobserve(infoSection);
                     }
                 });

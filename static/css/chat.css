@@ -1,4 +1,3 @@
-/* RESET */
 *,
 *::before,
 *::after {
@@ -19,7 +18,7 @@ body {
     overflow: hidden;
 }
 
-/* Fix háttér (ha szeretnél, ugyanazt használhatod mint a főoldalon) */
+
 #bg-layer {
     position: fixed;
     inset: 0;
@@ -27,7 +26,7 @@ body {
     background: radial-gradient(circle at center, #101018 0%, #020308 60%);
 }
 
-/* A teljes chat panel középen */
+
 .chat-shell {
     min-height: 100vh;
     display: flex;
@@ -36,7 +35,7 @@ body {
     padding: 16px 0;
 }
 
-/* Üveges főpanel */
+
 .chat-wrapper {
     width: 100%;
     max-width: 900px;
@@ -58,7 +57,7 @@ body {
     padding: 22px 26px 18px;
 }
 
-/* HEADER */
+
 
 .chat-header {
     margin-bottom: 14px;
@@ -90,11 +89,11 @@ body {
     margin-top: 4px;
 }
 
-/* MAIN CHAT AREA */
+
 
 .chat-main {
     flex: 1;
-    min-height: 0; /* fontos a flex scroll miatt */
+    min-height: 0; 
 }
 
 .chat-box {
@@ -106,7 +105,7 @@ body {
     background: radial-gradient(circle at top, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.4));
 }
 
-/* Buborékok */
+
 
 .chat-bubble {
     max-width: 75%;
@@ -133,51 +132,67 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* FOOTER – input + gomb */
+
 
 .chat-footer {
-    margin-top: 10px;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .chat-input-row {
     display: flex;
-    gap: 10px;
     align-items: center;
+    gap: 10px;
+    padding: 6px 8px;
+
+    background: rgba(5, 8, 20, 0.85);
+    border-radius: 999px;
+    border: 1px solid rgba(110, 130, 200, 0.35);
+    box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(20, 40, 80, 0.35);
 }
 
 .chat-input {
     flex: 1;
-    padding: 10px 12px;
+    padding: 10px 14px;
     border-radius: 999px;
-    border: 1px solid rgba(200, 210, 255, 0.3);
-    background: rgba(9, 10, 18, 0.9);
+    border: 1px solid rgba(120, 130, 200, 0.5);
+    background: radial-gradient(circle at top, rgba(10, 14, 30, 0.95), rgba(5, 7, 18, 0.95));
     color: #f9fbff;
-    outline: none;
     font: inherit;
+    outline: none;
 }
 
 .chat-input::placeholder {
-    color: rgba(200, 210, 255, 0.65);
+    color: rgba(180, 190, 230, 0.7);
 }
 
 .chat-input:focus {
     border-color: rgba(129, 212, 250, 0.9);
-    box-shadow: 0 0 0 1px rgba(129, 212, 250, 0.3);
+    box-shadow: 0 0 0 1px rgba(129, 212, 250, 0.35);
 }
 
+
 .chat-send-btn {
-    padding: 10px 18px;
+    padding: 10px 20px;
     border-radius: 999px;
     border: none;
     cursor: pointer;
+
     font-family: "Poppins", sans-serif;
-    font-size: 0.95rem;
-    letter-spacing: 0.04em;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 
-    background: linear-gradient(135deg, #ffb74d, #ff7043);
-    color: #1b0f08;
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #ffcc80, #ff8a65);
+    color: #251208;
+
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, 0.6),
+        0 0 24px rgba(255, 172, 94, 0.6);
+
     transition:
         transform 0.15s ease-out,
         box-shadow 0.15s ease-out,
@@ -186,16 +201,20 @@ body {
 
 .chat-send-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.5);
     filter: brightness(1.05);
+    box-shadow:
+        0 12px 26px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(255, 188, 120, 0.7);
 }
 
 .chat-send-btn:active {
     transform: translateY(1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(255, 188, 120, 0.5);
 }
 
-/* Scrollbar finomítása */
+
 
 .chat-box::-webkit-scrollbar {
     width: 8px;
@@ -246,50 +265,145 @@ body {
     background: radial-gradient(circle at 30% 30%, #ccff90, #00e676);
 }
 
-/* RESPONSIVE */
+
 
 @media (max-width: 768px) {
-    .chat-wrapper {
-        max-width: 100%;
-        height: 100vh;
-        max-height: none;
-        border-radius: 0;
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;              
+        background: #050509;
     }
 
     .chat-shell {
+        min-height: 100vh;
         padding: 0;
+        display: flex;
+        justify-content: stretch;
+        align-items: stretch;
+    }
+
+    .chat-wrapper {
+        width: 100%;
+        max-width: 100%;
+        height: 100vh;
+        max-height: none;
+
+        border-radius: 0;             
+        padding: 10px 10px 8px;
+        box-shadow: none;
+        border: none;
+
+        display: flex;
+        flex-direction: column;
+        background: rgba(5, 5, 12, 0.95);
+    }
+
+
+    .chat-header {
+        padding-bottom: 6px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .chat-title-row {
+        gap: 10px;
+    }
+
+    .chat-emoji {
+        font-size: 2rem;
     }
 
     .chat-title-text h1 {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
+    }
+
+    .chat-subtitle {
+        font-size: 0.85rem;
+    }
+
+
+    .chat-main {
+        flex: 1;
+        min-height: 0;             
     }
 
     .chat-box {
-        padding: 10px 4px;
+        height: 100%;
+        padding: 8px 4px 10px;
+        background: transparent;      
+        border-radius: 0;
+        overflow-y: auto;
     }
 
     .chat-bubble {
         max-width: 85%;
         font-size: 0.9rem;
     }
+
+
+    .chat-footer {
+        padding-top: 4px;
+        margin-top: 4px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .chat-input-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .chat-input {
+        padding: 9px 11px;
+        font-size: 0.9rem;
+    }
+
+    .chat-send-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+    }
 }
 
-/* -----------------------------------
-   AVATAR TRANSITION (ÚJ RÉSZ) 
-   -----------------------------------
-*/
-
-/* Az avatár alapállapota: animáció engedélyezése */
-#avatar-image {
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    opacity: 1;
-    transform: scale(1);
-    /* Biztosítjuk, hogy a kép ne nyúljon el */
-    object-fit: contain; 
+.chat-title-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
 }
 
-/* Ezt az osztályt rakja rá a JS, amikor váltunk */
-#avatar-image.switching {
-    opacity: 0;
-    transform: scale(0.8);
+
+.close-btn {
+    margin-left: auto;  
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 42px;
+    height: 42px;
+    border-radius: 25%;
+    font-size: 1.4rem;
+
+    color: #f1f1f1;
+    text-decoration: none;
+
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.06);
 }

@@ -7,7 +7,7 @@ HF_TOKEN = ""
 if HF_TOKEN is None:
     raise RuntimeError("HF_TOKEN nincs beállítva! PowerShell: setx HF_TOKEN \"A_TOKEND\"")
 
-# ⭐ 100% működő, CHAT-kompatibilis modell:
+
 MODEL_NAME = "google/gemma-2-9b-it"
 
 hf_client = InferenceClient(
@@ -26,7 +26,7 @@ BASE_SYSTEM_PROMPT = (
 
 class ChatbotSession:
     def __init__(self, persona: str):
-        # A rendszerprompt + persona együtt
+
         self.history = [
             {"role": "system", "content": BASE_SYSTEM_PROMPT + "\n\nSzemélyiséged:\n" + persona}
         ]

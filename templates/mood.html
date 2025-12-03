@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>{{ mood.name }} – Chat</title>
 
-    <!-- Google Fonts a fő oldalhoz hasonlóan -->
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <!-- Külső CSS -->
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
 </head>
 
@@ -32,12 +32,12 @@
                         <h1>{{ mood.name }} AI Chat</h1>
                         <p class="chat-subtitle">{{ mood.quote }}</p>
                     </div>
+                     <a href="/" class="close-btn">✕</a>
                 </div>
             </header>
 
             <main class="chat-main">
                 <div id="chatbox" class="chat-box">
-                    <!-- ide kerülnek a buborékok JS-ből -->
                 </div>
             </main>
 
@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <!-- Külső JS -->
+
     <script src="{{ url_for('static', filename='scripts/chat.js') }}"></script>
 </body>
 </html>

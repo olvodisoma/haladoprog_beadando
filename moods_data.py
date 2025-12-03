@@ -1,4 +1,3 @@
-# moods_data.py
 
 MOODS = [
     {

@@ -4,8 +4,7 @@ from chatbot import ChatbotSession
 
 app = Flask(__name__)
 
-# ÉLŐ BESZÉLGETÉSEK memóriája:
-# session_id = ChatbotSession(...)
+
 chat_sessions = {}
 
 
@@ -20,7 +19,7 @@ def mood_page(slug):
     if not mood:
         abort(404)
 
-    # Chat session létrehozás, ha nincs
+
     if slug not in chat_sessions:
         chat_sessions[slug] = ChatbotSession(persona=mood["persona"])
 
