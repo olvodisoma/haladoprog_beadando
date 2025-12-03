@@ -3,81 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ mood.name }} – Chat</title>
+
+    <!-- Google Fonts a fő oldalhoz hasonlóan -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Külső CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
 </head>
 
-<body style="background:#111; color:white; font-family:sans-serif; padding:20px;">
+<body data-mood="{{ mood.slug }}">
+    <div id="bg-layer"></div>
 
-<h1>{{ mood.emoji }} {{ mood.name }} AI Chat</h1>
-<p>{{ mood.quote }}</p>
+    <div class="chat-shell">
+        <div class="chat-wrapper">
 
-<div id="chatbox" style="
-    margin-top:20px; 
-    background:#222; 
-    padding:20px; 
-    border-radius:12px;
-    height:400px;
-    overflow-y:auto;">
-</div>
+            <header class="chat-header">
+                <div class="chat-title-row">
+                    <div class="chat-emoji">{{ mood.emoji }}</div>
+                    <div class="chat-title-text">
+                        <h1>{{ mood.name }} AI Chat</h1>
+                        <p class="chat-subtitle">{{ mood.quote }}</p>
+                    </div>
+                </div>
+            </header>
 
-<div style="margin-top:10px;">
-    <input id="message" style="width:80%; padding:10px;" placeholder="Írd be az üzeneted...">
-    <button onclick="sendMessage()" style="padding:10px;">Küldés</button>
-</div>
+            <main class="chat-main">
+                <div id="chatbox" class="chat-box">
+                    <!-- ide kerülnek a buborékok JS-ből -->
+                </div>
+            </main>
 
-<script>
-async function sendMessage() {
-    const input = document.getElementById("message");
-    const text = input.value.trim();
-    if (!text) return;
+            <footer class="chat-footer">
+                <form id="chat-form" class="chat-input-row">
+                    <input
+                        id="message"
+                        class="chat-input"
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Írd be az üzeneted..."
+                    />
+                    <button type="submit" class="chat-send-btn">
+                        Küldés
+                    </button>
+                </form>
+            </footer>
 
-    // helyi buborék hozzáadása
-    addBubble(text, "user");
+        </div>
+    </div>
 
-    // 🔥 AZONNAL töröljük az inputot – ez a chatgpt-stílus
-    input.value = "";
-
-    try {
-        const res = await fetch(`/mood/{{ mood.slug }}/chat`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: text })
-        });
-
-        const data = await res.json();
-
-        if (data.reply) {
-            addBubble(data.reply, "ai");
-        } else {
-            addBubble("Hiba történt a szerveren.", "ai");
-        }
-
-    } catch (e) {
-        addBubble("Nem sikerült elküldeni az üzenetet.", "ai");
-    }
-}
-
-function addBubble(text, type) {
-    let box = document.getElementById("chatbox");
-    let div = document.createElement("div");
-
-    div.style.margin = "10px 0";
-    div.style.padding = "10px";
-    div.style.borderRadius = "10px";
-    div.style.whiteSpace = "pre-wrap";
-
-    if (type === "user") {
-        div.style.background = "#3a3";
-        div.style.textAlign = "right";
-    } else {
-        div.style.background = "#333";
-        div.style.textAlign = "left";
-    }
-
-    div.textContent = text;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-}
-</script>
-
+    <!-- Külső JS -->
+    <script src="{{ url_for('static', filename='scripts/chat.js') }}"></script>
 </body>
 </html>
