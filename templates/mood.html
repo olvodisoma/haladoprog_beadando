@@ -19,7 +19,15 @@
 
             <header class="chat-header">
                 <div class="chat-title-row">
-                    <div class="chat-emoji">{{ mood.emoji }}</div>
+                    <div class="chat-emoji">
+                        <img id="avatar-image"
+                             src="{{ mood.avatars.default }}"
+                             data-default="{{ mood.avatars.default }}"
+                             data-talking="{{ mood.avatars.talking }}"
+                             data-thinking="{{ mood.avatars.thinking }}"
+                             alt="{{ mood.name }}"
+                             style="width: 64px; height: 64px;">
+                    </div>
                     <div class="chat-title-text">
                         <h1>{{ mood.name }} AI Chat</h1>
                         <p class="chat-subtitle">{{ mood.quote }}</p>

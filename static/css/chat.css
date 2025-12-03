@@ -72,6 +72,10 @@ body {
 
 .chat-emoji {
     font-size: 2.3rem;
+    /* Ez biztosítja, hogy a kép ne tolja szét a layoutot */
+    display: flex; 
+    align-items: center;
+    justify-content: center;
 }
 
 .chat-title-text h1 {
@@ -268,4 +272,24 @@ body {
         max-width: 85%;
         font-size: 0.9rem;
     }
+}
+
+/* -----------------------------------
+   AVATAR TRANSITION (ÚJ RÉSZ) 
+   -----------------------------------
+*/
+
+/* Az avatár alapállapota: animáció engedélyezése */
+#avatar-image {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    opacity: 1;
+    transform: scale(1);
+    /* Biztosítjuk, hogy a kép ne nyúljon el */
+    object-fit: contain; 
+}
+
+/* Ezt az osztályt rakja rá a JS, amikor váltunk */
+#avatar-image.switching {
+    opacity: 0;
+    transform: scale(0.8);
 }

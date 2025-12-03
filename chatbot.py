@@ -1,10 +1,9 @@
 # chatbot.py
-import os
 import time
 import random
 from huggingface_hub import InferenceClient
 
-HF_TOKEN = "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"
+HF_TOKEN = ""
 if HF_TOKEN is None:
     raise RuntimeError("HF_TOKEN nincs beállítva! PowerShell: setx HF_TOKEN \"A_TOKEND\"")
 
