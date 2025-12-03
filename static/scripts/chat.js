@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         input.value = "";
         input.focus();
 
-        // opcionális: “gépelés...” jelzés
+
         const typingBubble = addBubble("Gépelés...", "ai", true);
 
         try {
@@ -55,12 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return isTyping ? div : null;
     }
 
-    // ================================
-    // HÁTTÉR ANIMÁCIÓ – AKTUÁLIS MOOD
-    // ================================
+
 
     const bg = document.getElementById("bg-layer");
-    const moodSlug = document.body.dataset.mood || "nyugodt";  // pl. "boldog", "duhos"...
+    const moodSlug = document.body.dataset.mood || "nyugodt";  
 
     const moodToClass = {
         boldog: "shape-happy",
@@ -77,21 +75,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const shape = document.createElement("div");
         shape.classList.add("bg-shape", shapeClass);
 
-        const size = Math.random() * 160 + 90;  // kicsit nagyobb buborékok
+        const size = Math.random() * 160 + 90;  
         shape.style.width = `${size}px`;
         shape.style.height = `${size}px`;
 
         shape.style.left = Math.random() * 100 + "vw";
         shape.style.top  = Math.random() * 100 + "vh";
 
-        // 🔥 nagyobb mozgási vektor → jobban látható animáció
+   
         shape.style.setProperty("--movex", (Math.random() - 0.5) * 240 + "px");
         shape.style.setProperty("--movey", (Math.random() - 0.5) * 240 + "px");
 
         bg.appendChild(shape);
     }
 
-    const count = 12; // kicsit több shape → élőbb háttér
+    const count = 12; 
     for (let i = 0; i < count; i++) {
         spawnSlowShape();
     }
