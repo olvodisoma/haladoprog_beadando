@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>MoodBase – Hangulatválasztó</title>
+</head>
+<body style="background: #202540; color: white; font-family: sans-serif; text-align:center; padding: 20px;">
+
+    <h1>Válassz egy hangulatot!</h1>
+    <p>Kattints arra, ami most a legjobban illik hozzád.</p>
+
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+        {% for mood in moods %}
+        <a href="{{ url_for('mood_page', slug=mood['slug']) }}"
+           style="text-decoration:none; color:white;">
+            
+            <div style="
+                width:180px;
+                padding:20px;
+                background:#2e3366;
+                border-radius:15px;
+                box-shadow:0 0 10px rgba(0,0,0,0.3);
+                transition:0.2s;
+            "
+            onmouseover="this.style.transform='scale(1.05)'"
+            onmouseout="this.style.transform='scale(1)'">
+                <div style="font-size:40px;">{{ mood['emoji'] }}</div>
+                <h3>{{ mood['name'] }}</h3>
+                <p style="opacity:0.8;">{{ mood['description'] }}</p>
+            </div>
+
+        </a>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
