@@ -2,34 +2,82 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>{{ mood.name }} – MoodBase</title>
+    <title>{{ mood.name }} – Chat</title>
 </head>
-<body style="background:#121528; color:white; font-family:sans-serif; text-align:center; padding:40px;">
 
-    <div style="max-width:600px; margin:0 auto; padding:30px;
-                background:#1b1f3b; border-radius:20px;
-                box-shadow:0 0 20px rgba(0,0,0,0.4);">
+<body style="background:#111; color:white; font-family:sans-serif; padding:20px;">
 
-        <div style="font-size:80px; margin-bottom:10px;">
-            {{ mood.emoji }}
-        </div>
+<h1>{{ mood.emoji }} {{ mood.name }} AI Chat</h1>
+<p>{{ mood.quote }}</p>
 
-        <h1 style="margin-bottom:5px;">{{ mood.name }}</h1>
+<div id="chatbox" style="
+    margin-top:20px; 
+    background:#222; 
+    padding:20px; 
+    border-radius:12px;
+    height:400px;
+    overflow-y:auto;">
+</div>
 
-        <p style="font-style:italic; opacity:0.8; margin-bottom:20px;">
-            {{ mood.quote }}
-        </p>
+<div style="margin-top:10px;">
+    <input id="message" style="width:80%; padding:10px;" placeholder="Írd be az üzeneted...">
+    <button onclick="sendMessage()" style="padding:10px;">Küldés</button>
+</div>
 
-        <p style="opacity:0.9; margin-bottom:30px;">
-            {{ mood.description }}
-        </p>
+<script>
+async function sendMessage() {
+    const input = document.getElementById("message");
+    const text = input.value.trim();
+    if (!text) return;
 
-        <a href="{{ url_for('index') }}"
-           style="color:#8bc6ff; text-decoration:none; font-size:18px;">
-           ← Vissza a hangulatokhoz
-        </a>
+    // helyi buborék hozzáadása
+    addBubble(text, "user");
 
-    </div>
+    // 🔥 AZONNAL töröljük az inputot – ez a chatgpt-stílus
+    input.value = "";
+
+    try {
+        const res = await fetch(`/mood/{{ mood.slug }}/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text })
+        });
+
+        const data = await res.json();
+
+        if (data.reply) {
+            addBubble(data.reply, "ai");
+        } else {
+            addBubble("Hiba történt a szerveren.", "ai");
+        }
+
+    } catch (e) {
+        addBubble("Nem sikerült elküldeni az üzenetet.", "ai");
+    }
+}
+
+function addBubble(text, type) {
+    let box = document.getElementById("chatbox");
+    let div = document.createElement("div");
+
+    div.style.margin = "10px 0";
+    div.style.padding = "10px";
+    div.style.borderRadius = "10px";
+    div.style.whiteSpace = "pre-wrap";
+
+    if (type === "user") {
+        div.style.background = "#3a3";
+        div.style.textAlign = "right";
+    } else {
+        div.style.background = "#333";
+        div.style.textAlign = "left";
+    }
+
+    div.textContent = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+</script>
 
 </body>
 </html>
