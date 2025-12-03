@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>MoodBase – Hangulatválasztó</title>
-    
+
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter+Tight:wght@300;400;600&display=swap" rel="stylesheet">
+
 </head>
 <body>
-
+    <div id="bg-layer"></div>
+     <div class="page-shell">
+        <div class="page-wrapper">
     <h1>Válassz egy hangulatot!</h1>
     <p class="subtitle">Kattints arra, ami most a legjobban illik hozzád.</p>
+    <p class="tagline">
+        Minden hangulat mögött egy saját stílusú AI csevegő vár.
+    </p>
 
     <div class="mood-grid">
         {% for mood in moods %}
         <a href="{{ url_for('mood_page', slug=mood['slug']) }}" class="mood-link">
             
-            <div class="mood-card">
+            <div class="mood-card" data-theme="{{ mood['slug'] }}">
                 <div class="mood-emoji">{{ mood['emoji'] }}</div>
                 <h3 class="mood-title">{{ mood['name'] }}</h3>
                 <p class="mood-desc">{{ mood['description'] }}</p>
@@ -24,6 +31,22 @@
         </a>
         {% endfor %}
     </div>
+    <section class="info">
+        <h2>Mi az a MoodBase?</h2>
+            <p>
+                A MoodBase egy kísérleti hangulatvezérelt felület, ahol minden hangulat
+                egy külön <strong>AI személyiséget</strong> jelent. Válaszd ki, hogyan érzel,
+                és beszélgess egy olyan asszisztenssel, aki ehhez a vibe-hoz igazodik.
+            </p>
+            <p>
+                Használd inspirációnak, levezetésnek, napzáró beszélgetéshez vagy csak poénból –
+                a hangulatod dönti el, milyen világba lépsz be.
+            </p>
+    </section>
+    </div>
+    </div>
 
+
+<script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
 </body>
 </html>

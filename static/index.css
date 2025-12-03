@@ -1,208 +1,478 @@
-/* ===============================
-   Globális háttér + animált orbok
-================================*/
+/* =========================================
+   0. RESET & ALAP
+========================================= */
 
 *,
 *::before,
 *::after {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
 }
 
 body {
-    margin: 0;
-    padding: 40px 20px;
-    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    color: #f8f9ff;
-    text-align: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     min-height: 100vh;
+    background: #050509;
+    color: #f9fbff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     overflow-x: hidden;
+    transition:
+        background 0.6s ease,
+        filter 0.4s ease;
     position: relative;
-
-    /* Fő gradient háttér */
-    background: radial-gradient(circle at top, #242b55 0, #151628 35%, #050510 100%);
 }
 
-/* Fénygömb 1 */
-body::before,
-body::after {
-    content: "";
+/* Fix háttérréteg, ide rajzol a JS */
+#bg-layer {
     position: fixed;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.7;
+    inset: 0;
     z-index: -1;
+    overflow: hidden;
     pointer-events: none;
-    animation: orbMove 26s ease-in-out infinite alternate;
+    background: radial-gradient(circle at center, #101018 0%, #030308 60%);
 }
 
-/* Lila orb balra fent */
-body::before {
-    background: radial-gradient(circle, rgba(155,106,255,0.9), transparent 60%);
-    top: -120px;
-    left: -80px;
+/* =========================================
+   1. BODY SZÍN HANGULAT SZERINT
+========================================= */
+
+body.theme-boldog {
+    background: radial-gradient(circle at top, #2b2b12, #050509 65%);
 }
 
-/* Kék orb jobbra lent */
-body::after {
-    background: radial-gradient(circle, rgba(70,184,255,0.9), transparent 60%);
-    bottom: -140px;
-    right: -60px;
-    animation-delay: 6s;
+body.theme-nyugodt {
+    background: radial-gradient(circle at top, #071a2a, #02040a 65%);
 }
 
-@keyframes orbMove {
-    0%   { transform: translate3d(0, 0, 0); }
-    50%  { transform: translate3d(40px, -30px, 0); }
-    100% { transform: translate3d(-30px, 40px, 0); }
+body.theme-duhos {
+    background: radial-gradient(circle at top, #2a0505, #050104 65%);
 }
 
+body.theme-faradt {
+    background: radial-gradient(circle at top, #1e1030, #050309 65%);
+}
 
-/* ===============================
-   Fő cím + alcím
-================================*/
+body.theme-motivalt {
+    background: radial-gradient(circle at top, #0b2412, #030507 65%);
+}
+
+/* =========================================
+   2. FEJLÉC, SZÖVEGEK
+========================================= */
+
 
 h1 {
-    font-size: 2.6rem;
-    margin: 0 0 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 3rem;
+    margin-top: 15px !important;   /* nagyon kicsi top margin */
+    margin-bottom: 12px;
     letter-spacing: 0.04em;
-    text-shadow: 0 6px 20px rgba(0,0,0,0.7);
+    text-align: center;
+    font-weight: 700;
+
+    background: linear-gradient(135deg, #b3e5ff 0%, #d1c4e9 40%, #ffffff 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    text-shadow:
+        0 0 15px rgba(180, 200, 255, 0.45),
+        0 0 40px rgba(120, 150, 255, 0.25);
+
+    animation:
+        titleGradient 8s ease-in-out infinite,
+        fadeUp 0.7s ease-out both;
 }
+
+/* Új gradient anim */
+@keyframes titleGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ===== Alcím – új font + finomabb megjelenés ===== */
 
 .subtitle {
-    font-size: 0.95rem;
-    opacity: 0.8;
-    margin-bottom: 35px;
+    font-family: "Inter Tight", sans-serif;
+    opacity: 0;
+    margin-bottom: 8px;
+    text-align: center;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    color: #e5e9f0;
+
+    animation: fadeUp 0.7s ease-out 0.15s both;
+}
+
+/* ===== Tagline – modern, vékony, profi ===== */
+
+.tagline {
+    font-family: "Inter Tight", sans-serif;
+    max-width: 800px;
+    text-align: center;
+    opacity: 0;
+    margin-bottom: 40px;
+    line-height: 1.5;
+    font-size: 1.05rem;
+    color: #cfd8e5;
+
+    animation: fadeUp 0.7s ease-out 0.3s both;
+}
+
+/* Fade up animáció */
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(16px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 
-/* ===============================
-   Mood Grid + Kártyák
-================================*/
+/* =========================================
+   FŐ PANEL – nagy, áttetsző üvegkeret
+========================================= */
+
+.page-shell {
+    min-height: 100vh;              /* teljes képernyő magasság */
+    display: flex;
+    justify-content: center;        /* vízszintes közép */
+    align-items: center;            /* VERTIKÁLIS KÖZÉP */
+    padding: 16px 0;                /* hogy ne ragadjon teljesen a széléhez, ha kicsi */
+}
+
+
+.page-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;                 /* csak vízszintes közép, függőleges már a shell-től jön */
+    padding: 24px 40px 28px;
+
+    background: rgba(10, 10, 20, 0.40);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 0 40px rgba(0, 0, 0, 0.45),
+        0 0 120px rgba(0, 0, 0, 0.35);
+
+    animation: wrapperFade 0.4s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes wrapperFade {
+    0% { opacity: 0; transform: translateY(18px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   3. MOOD GRID + KÁRTYÁK
+========================================= */
 
 .mood-grid {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    gap: 26px;
-    margin-top: 10px;
+    justify-content: center;   /* minden sor középen */
+    gap: 28px;
+
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto 30px;
 }
+
 
 .mood-link {
     text-decoration: none;
     color: inherit;
 }
 
-/* Üveg-szerű kártya */
 .mood-card {
-    width: 190px;
-    padding: 18px 18px 16px;
-    border-radius: 20px;
+    /* MIND az 5 kártya ugyanakkora lesz */
+    flex: 0 0 260px;      /* fix szélesség a flex layoutban */
+    width: 260px;
+    height: 190px;        /* << itt tudsz játszani, ha magasabbat akarsz */
 
-    background: linear-gradient(
-        145deg,
-        rgba(13, 18, 46, 0.85),
-        rgba(33, 39, 85, 0.9)
-    );
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.7),
-        0 0 14px rgba(113, 184, 255, 0.2);
+    max-width: 100%;
 
     position: relative;
-    overflow: hidden;
+    padding: 24px 20px 22px;
+    border-radius: 18px;
+    background: rgba(12, 16, 32, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
-
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.55);
+    cursor: pointer;
     transition:
-        transform 0.23s ease,
-        box-shadow 0.23s ease,
-        border-color 0.23s ease,
-        background 0.23s ease;
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease,
+        background 0.35s ease;
+    overflow: hidden;
+
+    /* belső elrendezés, hogy normálisan álljon az emoji + szöveg */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
-/* Felső színes fénycsík */
 .mood-card::before {
     content: "";
     position: absolute;
-    left: -20%;
-    top: -3px;
-    width: 140%;
-    height: 4px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, #ffdd63, #ff7eb3, #a07bff, #63fff4);
-    opacity: 0.7;
-}
-
-/* Lebegés + glow hoverkor */
-.mood-card:hover {
-    transform: translateY(-8px) scale(1.04);
-    box-shadow:
-        0 24px 55px rgba(0, 0, 0, 0.8),
-        0 0 26px rgba(135, 196, 255, 0.7);
-    border-color: rgba(180, 210, 255, 0.55);
-    background: linear-gradient(
-        145deg,
-        rgba(23, 30, 70, 0.96),
-        rgba(43, 50, 112, 0.98)
+    inset: -40%;
+    opacity: 0;
+    background: conic-gradient(
+        from 0deg,
+        rgba(255, 255, 255, 0.0),
+        rgba(255, 255, 255, 0.35),
+        rgba(255, 255, 255, 0.0),
+        rgba(255, 255, 255, 0.0)
     );
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
+    filter: blur(22px);
+    pointer-events: none;
 }
 
-/* Minden második kártya finoman lebeg */
-.mood-card:nth-child(2n) {
-    animation: floatCard 7s ease-in-out infinite;
+.mood-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.18);
 }
 
-@keyframes floatCard {
-    0%   { transform: translateY(0); }
-    50%  { transform: translateY(-6px); }
-    100% { transform: translateY(0); }
+.mood-card:hover::before {
+    opacity: 1;
+    transform: rotate(35deg);
 }
 
-
-/* ===============================
-   Kártya tartalom
-================================*/
+/* Emoji + cím + leírás */
 
 .mood-emoji {
-    font-size: 46px;
-    margin-bottom: 8px;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+    font-size: 3rem;
+    margin-bottom: 10px;
+    display: inline-block;
+    transition: transform 0.3s ease;
 }
 
 .mood-title {
-    margin: 4px 0 6px;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    margin-bottom: 6px;
     letter-spacing: 0.03em;
 }
 
+/* Hover: kis glow a cím körül */
+.mood-card:hover .mood-title {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
 .mood-desc {
-    opacity: 0.8;
-    font-size: 0.82rem;
-    line-height: 1.35;
+    font-size: 0.92rem;
+    opacity: 0.85;
 }
 
+/* Emoji “wiggle” hoverre */
+.mood-card:hover .mood-emoji {
+    animation: emojiWiggle 0.6s ease;
+}
 
-/* ===============================
-   Mobil finomhangolás
-================================*/
+@keyframes emojiWiggle {
+    0%   { transform: translateY(0) rotate(0deg); }
+    20%  { transform: translateY(-3px) rotate(-6deg); }
+    40%  { transform: translateY(0) rotate(4deg); }
+    60%  { transform: translateY(-2px) rotate(-4deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
 
-@media (max-width: 600px) {
+/* =========================================
+   4. INFO SZEKCIÓ
+========================================= */
+
+/* =========================================
+   4. INFO SZEKCIÓ – új betűk + design
+========================================= */
+
+.info {
+    width: 100%;
+    max-width: 800px;
+    margin: 24px auto 8px;      /* szorosabban a grid alatt */
+    text-align: center;
+
+    font-family: "Inter Tight", sans-serif;
+
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+}
+
+/* scrollnál kapja ezt a class-t az IntersectionObserver */
+.info.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Cím – Poppins + finom gradient, mint a fő címnél, csak visszafogottabban */
+.info h2 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+
+    position: relative;
+    display: inline-block;
+
+    background: linear-gradient(135deg, #dbeafe 0%, #e0d7ff 40%, #ffffff 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    text-shadow:
+        0 0 10px rgba(160, 190, 255, 0.45),
+        0 0 25px rgba(90, 120, 255, 0.25);
+
+    animation: titleGradient 10s ease-in-out infinite;
+}
+
+/* alsó vonal – kék-lila gradient, arany nélkül */
+.info h2::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    height: 2px;
+    width: 0;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #b3e5ff, #c5cae9, #80deea);
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.info.visible h2::after {
+    width: 60%;
+}
+
+/* Szövegek – Inter Tight, jó olvashatóság a sötét háttéren */
+.info p {
+    font-size: 1rem;
+    color: #d6deff;
+    opacity: 0.9;
+    margin: 8px auto 6px;
+    line-height: 1.6;
+    max-width: 760px;
+}
+/* =========================================
+   5. HÁTTÉR PARTIKULUMOK – JS animálja
+========================================= */
+
+.bg-shape {
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(1);
+    transition: opacity 0.6s ease;
+    mix-blend-mode: screen;
+}
+
+/* fade-in amikor létrejön */
+.bg-shape.is-visible {
+    opacity: 0.9;
+}
+
+/* Mood-specifikus stílusok */
+
+.shape-happy {
+    background: radial-gradient(circle at 30% 30%, #fff9c4, #fdd835);
+    filter: blur(8px);
+}
+
+.shape-calm {
+    background: radial-gradient(circle at 20% 10%, #81d4fa, #5c6bc0);
+    filter: blur(10px);
+}
+
+.shape-angry {
+    background: linear-gradient(90deg, #ff8a80, #ff1744);
+    filter: blur(5px);
+}
+
+.shape-tired {
+    background: radial-gradient(circle at 40% 10%, #e1bee7, #4a148c);
+    filter: blur(16px);
+}
+
+.shape-motivated {
+    background: radial-gradient(circle at 30% 30%, #ccff90, #00e676);
+    filter: blur(6px);
+    box-shadow: 0 0 18px rgba(0, 230, 118, 0.7);
+}
+
+/* =========================================
+   6. RESPONSIVE
+========================================= */
+@media (max-width: 900px) {
+html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* A BODY NEM SCROLLOZIK MOBILON */
+    }
+
+    /* A BODY KÖZÉPRE RAKJA A CONTENTET */
     body {
-        padding: 30px 16px;
+        background: #050509;
     }
 
-    h1 {
-        font-size: 2.1rem;
+    /* A PAGE-WRAPPER LEGYEN MAX 100vh MAGAS ÉS SCROLLOZZON BELÜL */
+    .page-wrapper {
+        width: 92%;
+        max-width: 420px;          /* iPhone 12 Pro barát */
+        max-height: 100vh;         /* <<< EZ A LÉNYEG! */
+        overflow-y: auto;          /* <<< BELÜL SCROLL */
+        -webkit-overflow-scrolling: touch;
+        
+        margin: 0 auto;
+        padding: 16px 20px 20px;
+
+        background: rgba(10, 10, 20, 0.45);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+
+        border-radius: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        box-shadow:
+            0 0 20px rgba(0, 0, 0, 0.45),
+            0 0 50px rgba(0, 0, 0, 0.35);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-    .subtitle {
-        font-size: 0.9rem;
-        margin-bottom: 26px;
+    /* GRID + INFO igazítás */
+    .mood-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+        max-width: 380px;
+        justify-items: center;
+    }
+    
+    .info {
+        max-width: 360px;
     }
 
-    .mood-card {
-        width: 170px;
-        padding: 16px 16px 14px;
-    }
 }
+
