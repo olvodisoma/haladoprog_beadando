@@ -1,6 +1,5 @@
 # chatbot.py
 
-import os
 from huggingface_hub import InferenceClient
 
 HF_TOKEN = ""

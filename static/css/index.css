@@ -140,12 +140,28 @@ h1 {
    FŐ PANEL – nagy, áttetsző üvegkeret
 ========================================= */
 
-.page-shell {
-    min-height: 100vh;              /* teljes képernyő magasság */
-    display: flex;
-    justify-content: center;        /* vízszintes közép */
-    align-items: center;            /* VERTIKÁLIS KÖZÉP */
-    padding: 16px 0;                /* hogy ne ragadjon teljesen a széléhez, ha kicsi */
+
+/*.page-shell {
+    /* min-height: 100vh; */              /* teljes képernyő magasság */
+    /* display: flex; */
+    /* justify-content: center; */        /* vízszintes közép */
+    /* align-items: center; */            /* VERTIKÁLIS KÖZÉP */
+    /*padding: 16px 0;*/                      /* hogy ne ragadjon teljesen a széléhez, ha kicsi */
+/*}
+*/
+
+@media (min-width: 901px) {
+    .page-shell {
+        min-height: auto;
+        display: block;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    html, body {
+        height: auto;
+        overflow-x: hidden;
+    }
 }
 
 
